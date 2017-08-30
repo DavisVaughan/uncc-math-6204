@@ -23,8 +23,9 @@ def main():
         'Euro Put'   : eur_put
     })
 
-    print(result)
+    return result
 
 
 # Executing main
 main()
+
