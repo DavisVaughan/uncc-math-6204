@@ -11,7 +11,10 @@ def main():
     r          = 0.05
     sigma      = 0.10
 
-    print(V_eur_call(s_0, k, r, div_yield, t_terminal, t, sigma))
-    print( V_eur_put(s_0, k, r, div_yield, t_terminal, t, sigma))
+    eur_call = V_eur_call(s_0, k, r, div_yield, t_terminal, t, sigma)
+    eur_put  = V_eur_put(s_0, k, r, div_yield, t_terminal, t, sigma)
+
+    print()
+    print(V_eur_put(s_0, k, r, div_yield, t_terminal, t, sigma))
 
 main()
