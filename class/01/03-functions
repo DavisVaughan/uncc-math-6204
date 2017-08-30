@@ -1,0 +1,20 @@
+# A function to return a cool math result
+# Notice that the function name is specified after def
+# Notice the :
+# Notice that the indentation is done for you and is important!
+def my_fun(x):
+    return x**2 - 2*x - 3
+
+my_fun(1)
+my_fun(2)
+
+x = np.linspace(1, 10, 10)
+
+my_fun(x)
+
+# Plot your new fun function
+import matplotlib.pyplot as plt
+plt.figure(figsize=(12,9))
+plt.plot(x, my_fun(x), 'v')
+plt.plot(x, my_fun(x)*2, '.')
+plt.show()
