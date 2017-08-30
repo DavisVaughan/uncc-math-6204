@@ -1,4 +1,5 @@
-from call_option_value import V_eur_call, V_eur_put
+from option_value import price_eur_call, price_eur_put
+import pandas as pd
 
 def main():
 
@@ -9,13 +10,20 @@ def main():
     t_terminal = 1
     div_yield  = 0.025
     r          = 0.05
-    sigma      = 0.10
+    sigma      = np.linspace(.1, 1, 10)
 
-    eur_call = V_eur_call(s_0, k, r, div_yield, t_terminal, t, sigma)
-    eur_put  = V_eur_put(s_0, k, r, div_yield, t_terminal, t, sigma)
+    # Calculate call and put values
+    eur_call = price_eur_call(s_0, k, r, div_yield, t_terminal, t, sigma)
+    eur_put  = price_eur_put(s_0, k, r, div_yield, t_terminal, t, sigma)
 
-    print('European call value: ' + str(eur_call))
-    print('European put value:  ' + str(eur_put))
+    # Structure as data frame
+    result = pd.DataFrame({
+        'Volatility' : sigma,
+        'Euro Call'  : eur_call,
+        'Euro Put'   : eur_put
+    })
+
+    print(result)
 
 
 # Executing main

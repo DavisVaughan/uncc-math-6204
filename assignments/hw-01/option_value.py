@@ -5,7 +5,7 @@ from math import exp
 from scipy.stats import norm
 
 
-def V_eur_call(s, k, r, div_yield, t_terminal, t, sigma):
+def price_eur_call(s, k, r, div_yield, t_terminal, t, sigma):
 
     """
     Calculate the value of a european call option
@@ -27,7 +27,7 @@ def V_eur_call(s, k, r, div_yield, t_terminal, t, sigma):
     V = s * exp(-1 * div_yield * (t_terminal - t)) * F_d_1 - k * exp(-1 * r * (t_terminal - t)) * F_d_2
     return V
 
-def V_eur_put(s, k, r, div_yield, t_terminal, t, sigma):
+def price_eur_put(s, k, r, div_yield, t_terminal, t, sigma):
 
     """
     Calculate the value of a european put option
