@@ -14,7 +14,9 @@ def main():
     eur_call = V_eur_call(s_0, k, r, div_yield, t_terminal, t, sigma)
     eur_put  = V_eur_put(s_0, k, r, div_yield, t_terminal, t, sigma)
 
-    print()
-    print(V_eur_put(s_0, k, r, div_yield, t_terminal, t, sigma))
+    print('European call value: ' + str(eur_call))
+    print('European put value:  ' + str(eur_put))
 
+
+# Executing main
 main()
