@@ -1,4 +1,5 @@
 from option_value import price_eur_call, price_eur_put
+import numpy as np
 import pandas as pd
 
 def main():
@@ -26,6 +27,9 @@ def main():
     return result
 
 
-# Executing main
-main()
+# Main will not be executed during `import main`
+# Main will be executed when `python main.py` is run from terminal
+if __name__ == "__main__":
+    print(main())
+
 
