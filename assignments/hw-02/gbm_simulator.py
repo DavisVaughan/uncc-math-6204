@@ -1,11 +1,12 @@
 import numpy as np
 
 
-def gbm(n, s, mu, div_yield, t, t_terminal, dt, sigma, seed = None):
+def gbm(n, s, r, div_yield, t, t_terminal, dt, sigma, seed = None):
     """
     Simulate a geometric brownian motion path
     :param n:          Number of simulations
     :param s:          Stock price at time t
+    :param r:          Risk free interest rate
     :param div_yield:  Continuous dividend yield
     :param t_terminal: Terminal time
     :param t:          Starting time
@@ -32,6 +33,6 @@ def gbm(n, s, mu, div_yield, t, t_terminal, dt, sigma, seed = None):
 
     # Fill in the simulation matrix
     for i in range(1, t_total + 1):
-        s_t[:, i] = s_t[:, i-1] + (mu - div_yield) * s_t[:, i-1] * dt + sigma * s_t[:, i-1] * np.sqrt(dt) * z[:, i-1]
+        s_t[:, i] = s_t[:, i-1] + (r - div_yield) * s_t[:, i-1] * dt + sigma * s_t[:, i-1] * np.sqrt(dt) * z[:, i-1]
 
     return s_t
