@@ -101,7 +101,7 @@ import pandas as pd
 def main():
 
     # Parameters
-    n          = 100000
+    n          = 1000
     s          = 100
     k          = 100
     #mu        = 0.08 # Only r is used
