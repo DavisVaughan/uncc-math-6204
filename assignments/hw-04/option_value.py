@@ -11,7 +11,7 @@ def price_option(s, k, r, T, call_put = "call", option_type = "european"):
     :param T:           The number of years to discount
     :param call_put:    Either "call" or "put"
     :param option_type: The type of option. "european" or "american"
-    :return:            The Monte Carlo value of the European option
+    :return:            The Monte Carlo value of the option
     '''
 
     # Error checking
