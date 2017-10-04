@@ -1,0 +1,30 @@
+---
+title: "Numerical Methods for Finance homework"
+author: "Davis Vaughan"
+date: "10/4/2017"
+output:
+  html_document:
+    theme: flatly
+---
+
+Assignments
+
+* HW 1
+
+    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-01)
+    
+* HW 2
+
+    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-02)
+    
+* HW 3
+
+    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-03)
+
+* HW 4
+
+    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-04)
+    
+    * [Documentation](./assignments/hw-04/docs/_build/html/index.html)
+
+
