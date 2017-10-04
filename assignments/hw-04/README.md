@@ -2,58 +2,52 @@
 
 This README is intended to guide the user in how to use HW-04.
 
-The README is written in Markdown, and is much easier to read on GitHub:
+The assignment is hosted on github here:
 
-https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-03
-
-Documentation for the modules is hosted by github pages at
-
-
+https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-04
 
 ### General
 
 * Author   - Davis Vaughan
-* Date     - 9/21/2017
-* Homework - 03
+* Date     - 10/04/2017
+* Homework - 04
 
 ### Purpose
 
-The purpose of this module is to calculate the Monte Carlo value of European options in multiple
-ways using varying methods of accuracy.
-
-### Comments
-
-IMPORTANT! - The seed is set at the C++ level using Numba, not at the Python level. Because of this,
-we will not get the same results unless you implement this with Numba. Setting a seed of 100 at 
-the C++ level will generate a different stream of random numbers than setting a seed of 100 at 
-the Python level.
+The purpose of this module is to calculate the Monte Carlo value of American options 
+using the regression 1 approach from the Tools for Computational Finance book.
 
 ### Thoughts on numerical accuracy
 
-It seems like using a smaller time step seems to greatly increase the accuracy.
-Adding the second order term did not help the accuracy as much as I had expected.
-The biggest benefits seem to come from increasing the number of simulations.
-Using n = 50000 greatly increases the accuracy of the final results.
+I am not sure how accurate these values are. The European option value is ~28 for the 
+same parameters, and I can't imagine the price of the American option being a lot more than
+that. It should obviously be more expensive, but I don't think it should be >10 dollars more.
 
 ### Numerical methods used 
 
-* Both Euler and Milstein discretization of GBM were used to simulate the sample paths. 
+* The Euler discretization of GBM was used to simulate the sample paths. 
 
-* Using the value of S_T from the sample paths, the average payoffs of the option were calculated,
-and discounted back to time zero.
-
-* The exact solution to the GBM SDE was also used to compare accuracy results.
+* This method prices the American option using a regression method.
+    The continuation value at time t is calculated by regressing
+    the discounted value of the option at time t+1 on the
+    price at time t. The continuation value is then compared to
+    the value of the payoff at time t, and the max is chosen as the
+    value of the option at t.
 
 ### Included files
 
-`main.py`         - (DRIVER) a demo of the GBM functions using the parameters set in the HW-2 pdf.
+`main.py`         - (DRIVER) Simulates the GBM and calculates the American option values at different
+degrees of accuracy.
 
-`gbm_simulator.py` - The functions that generate the stock price simulations using either
- Euler or Miltstein methods.
+`gbm_simulator.py` - The functions that generate the stock price simulations using
+ Euler methods.
  
-`option_value.py` - Functions to calculate the value of the option from the simulated values.
+`option_value.py` - The `price_option()` function in this file is the interface that
+prices the option based on the user's inputs. It dispatches to find the correct pricing
+function using the functions in `option_value_dispatch.py`.
  
-`option_value_exact.py` - Previous HW code to generate the exact value of the options.
+`option_value_dispatch.py` - These function support `option_value.py` and are used 
+to return the correct option pricing function (European VS American and Call VS Put).
 
 ### How to run 
 
@@ -74,27 +68,12 @@ python2 main.py
 
 ^ Make sure you are using python2.
 
-A plot will pop up first with the 5 paths, and once you close the plot a numpy array
-will be printed to the console that looks like this:
+A pandas data frame should output:
 
 ```python
-   MC_option_value algorithm call_put    dt  exact_option_value option_type  \
-0        28.189921     euler     call   .01           28.684884    european   
-1        29.255651     euler      put   .01           28.198446    european   
-2        28.164755     euler     call  .001           28.684884    european   
-3        28.579581     euler      put  .001           28.198446    european   
-4        27.931396  milstein     call   .01           28.684884    european   
-5        29.136742  milstein      put   .01           28.198446    european   
-6        28.118083  milstein     call  .001           28.684884    european   
-7        28.570122  milstein      put  .001           28.198446    european   
-
-   absolute_error  
-0        0.494962  
-1        1.057205  
-2        0.520129  
-3        0.381135  
-4        0.753487  
-5        0.938296  
-6        0.566800  
-7        0.371676 
+   MC_option_value call_put    dt option_type
+0        43.226182     call   .01    american
+1        37.582431      put   .01    american
+2        45.613229     call  .001    american
+3        41.250757      put  .001    american
 ```

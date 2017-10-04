@@ -153,14 +153,88 @@
            <div itemprop="articleBody">
             
   <h1>Source code for main</h1><div class="highlight"><pre>
-<span></span><span class="c1"># See the Main docstring for all intro documentation</span>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">### Description</span>
+
+<span class="sd">This README is intended to guide the user in how to use HW-04.</span>
+
+<span class="sd">The assignment is hosted on github here:</span>
+
+<span class="sd">https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-04</span>
+
+<span class="sd">### General</span>
+
+<span class="sd">* Author   - Davis Vaughan</span>
+<span class="sd">* Date     - 10/04/2017</span>
+<span class="sd">* Homework - 04</span>
+
+<span class="sd">### Purpose</span>
+
+<span class="sd">The purpose of this module is to calculate the Monte Carlo value of American options</span>
+<span class="sd">using the regression 1 approach from the Tools for Computational Finance book.</span>
+
+<span class="sd">### Thoughts on numerical accuracy</span>
+
+<span class="sd">I am not sure how accurate these values are. The European option value is ~28 for the</span>
+<span class="sd">same parameters, and I can&#39;t imagine the price of the American option being a lot more than</span>
+<span class="sd">that. It should obviously be more expensive, but I don&#39;t think it should be &gt;10 dollars more.</span>
+
+<span class="sd">### Numerical methods used</span>
+
+<span class="sd">The Euler discretization of GBM was used to simulate the sample paths.</span>
+
+<span class="sd">This method prices the American option using a regression method.</span>
+<span class="sd">The continuation value at time t is calculated by regressing</span>
+<span class="sd">the discounted value of the option at time t+1 on the</span>
+<span class="sd">price at time t. The continuation value is then compared to</span>
+<span class="sd">the value of the payoff at time t, and the max is chosen as the</span>
+<span class="sd">value of the option at t.</span>
+
+<span class="sd">### Included files</span>
+
+<span class="sd">`main.py`         - (DRIVER) Simulates the GBM and calculates the American option values at different</span>
+<span class="sd">degrees of accuracy.</span>
+
+<span class="sd">`gbm_simulator.py` - The functions that generate the stock price simulations using</span>
+<span class="sd">Euler methods.</span>
+
+<span class="sd">`option_value.py` - The `price_option()` function in this file is the interface that</span>
+<span class="sd">prices the option based on the user&#39;s inputs. It dispatches to find the correct pricing</span>
+<span class="sd">function using the functions in `option_value_dispatch.py`.</span>
+
+<span class="sd">`option_value_dispatch.py` - These function support `option_value.py` and are used</span>
+<span class="sd">to return the correct option pricing function (European VS American and Call VS Put).</span>
+
+<span class="sd">### How to run</span>
+
+<span class="sd">Because the main.py file includes the code:</span>
+
+<span class="sd">if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">    print(main())</span>
+
+<span class="sd">the easiest way to run the example is from the terminal.</span>
+
+<span class="sd">Within your command line / terminal, navigate to the folder containing the main.py script, and just run:</span>
+
+<span class="sd">`python2 main.py`</span>
+
+<span class="sd">^ Make sure you are using python2.</span>
+
+<span class="sd">A pandas data frame should output:</span>
+
+<span class="sd">MC_option_value call_put    dt option_type</span>
+<span class="sd">0        43.226182     call   .01    american</span>
+<span class="sd">1        37.582431      put   .01    american</span>
+<span class="sd">2        45.613229     call  .001    american</span>
+<span class="sd">3        41.250757      put  .001    american</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">option_value</span> <span class="k">import</span> <span class="n">price_option</span>
 <span class="kn">from</span> <span class="nn">gbm_simulator</span> <span class="k">import</span> <span class="n">simulate_gbm</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../source/main.html#main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-
 
     <span class="c1"># Parameters</span>
     <span class="n">n</span>          <span class="o">=</span> <span class="mi">1000</span>
