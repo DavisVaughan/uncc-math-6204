@@ -160,7 +160,7 @@
 <dt id="option_value.price_option">
 <code class="descclassname">option_value.</code><code class="descname">price_option</code><span class="sig-paren">(</span><em>s</em>, <em>k</em>, <em>r</em>, <em>T</em>, <em>call_put='call'</em>, <em>option_type='european'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/option_value.html#price_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#option_value.price_option" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the time 0 value of an option.</p>
-<p>Paths <cite>s</cite> are constructed from <a class="reference internal" href="gbm_simulator.html#gbm_simulator.simulate_gbm" title="gbm_simulator.simulate_gbm"><code class="xref py py-func docutils literal"><span class="pre">gbm_simulator.simulate_gbm()</span></code></a> but</p>
+<p>Paths <cite>s</cite> are constructed from <a class="reference internal" href="gbm_simulator.html#gbm_simulator.simulate_gbm" title="gbm_simulator.simulate_gbm"><code class="xref py py-func docutils literal"><span class="pre">gbm_simulator.simulate_gbm()</span></code></a>.</p>
 <p>The unique thing about this approach is that it takes advantage of Python allowing functions to
 be first class objects. The correct option pricing function is constructed, and the passed up as
 the variable <cite>pricing_method</cite>.</p>

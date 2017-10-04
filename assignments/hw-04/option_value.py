@@ -4,7 +4,7 @@ from option_value_dispatch import dispatch_pricing_method
 def price_option(s, k, r, T, call_put = "call", option_type = "european"):
     """Calculate the time 0 value of an option.
 
-    Paths `s` are constructed from :py:func:`gbm_simulator.simulate_gbm` but
+    Paths `s` are constructed from :py:func:`gbm_simulator.simulate_gbm`.
 
     The unique thing about this approach is that it takes advantage of Python allowing functions to
     be first class objects. The correct option pricing function is constructed, and the passed up as
