@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>option_value module &#8212; HW-04_Option_Pricing 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-option_value">
+<span id="option-value-module"></span><h1>option_value module<a class="headerlink" href="#module-option_value" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="option_value.american">
+<code class="descclassname">option_value.</code><code class="descname">american</code><span class="sig-paren">(</span><em>call_put_option_price_at_T</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/option_value.html#american"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#option_value.american" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a function that prices an American call/put
+:param call_put_option_price_at_T:  A pricing function that prices the value of the option at T. This is different
+depending on whether the option is a call or a put. The function should accept s_T and k as parameters.
+:return:          American pricing function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="option_value.dispatch_pricing_method">
+<code class="descclassname">option_value.</code><code class="descname">dispatch_pricing_method</code><span class="sig-paren">(</span><em>call_put='call'</em>, <em>option_type='european'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/option_value.html#dispatch_pricing_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#option_value.dispatch_pricing_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formulate the correct option pricing function from user inputs
+:param call_put:     Either &#8220;call&#8221; or &#8220;put&#8221;
+:param option_type:  Either &#8220;european&#8221; or &#8220;american&#8221;
+:return:             A function that prices the specified type of option</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="option_value.european">
+<code class="descclassname">option_value.</code><code class="descname">european</code><span class="sig-paren">(</span><em>call_put_option_price_at_T</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/option_value.html#european"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#option_value.european" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a function that prices a European call/put
+:param call_put_option_price_at_T:  A pricing function that prices the value of the option at T. This is different
+depending on whether the option is a call or a put.
+:return:          European pricing function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="option_value.option_price_at_T_call">
+<code class="descclassname">option_value.</code><code class="descname">option_price_at_T_call</code><span class="sig-paren">(</span><em>s_T</em>, <em>k</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/option_value.html#option_price_at_T_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#option_value.option_price_at_T_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the option value at time T for a call
+:param s_T:  Stock price at T
+:param k:    Strike price
+:return:     Option value at T</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="option_value.option_price_at_T_put">
+<code class="descclassname">option_value.</code><code class="descname">option_price_at_T_put</code><span class="sig-paren">(</span><em>s_T</em>, <em>k</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/option_value.html#option_price_at_T_put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#option_value.option_price_at_T_put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the option value at time T for a put
+:param s_T:  Stock price at T
+:param k:    Strike price
+:return:     Option value at T</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="option_value.price_option">
+<code class="descclassname">option_value.</code><code class="descname">price_option</code><span class="sig-paren">(</span><em>s</em>, <em>k</em>, <em>r</em>, <em>T</em>, <em>call_put='call'</em>, <em>option_type='european'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/option_value.html#price_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#option_value.price_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the time 0 value of an option from Monte Carlo simulations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>s</strong> (<em>Numpy array</em>) &#8211; The simulated paths of the option.</li>
+<li><strong>k</strong> (<em>double</em>) &#8211; The strike price for the option.</li>
+<li><strong>r</strong> (<em>double</em>) &#8211; The risk free interest rate to discount at.</li>
+<li><strong>T</strong> (<em>double</em>) &#8211; The expiration date of the option. Used to discount.</li>
+<li><strong>call_put</strong> (<em>{&quot;call&quot;</em><em>, </em><em>&quot;put&quot;}</em><em>, </em><em>default &quot;call&quot;</em>) &#8211; Specifications for the side of the option to price.</li>
+<li><strong>option_type</strong> (<em>{&quot;european&quot;</em><em>, </em><em>&quot;american&quot;}</em><em>, </em><em>default &quot;european&quot;</em>) &#8211; The type of option to price.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>price</strong> &#8211; The Monte Carlo value of the option</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">double</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-func docutils literal"><span class="pre">simulate_gbm()</span></code></p>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/docs/source/option_value.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Davis Vaughan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../_sources/docs/source/option_value.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

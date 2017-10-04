@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>option_value &#8212; HW-04_Option_Pricing 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for option_value</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">scipy_opt</span>
+
+<div class="viewcode-block" id="price_option"><a class="viewcode-back" href="../docs/source/option_value.html#option_value.price_option">[docs]</a><span class="k">def</span> <span class="nf">price_option</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">call_put</span> <span class="o">=</span> <span class="s2">&quot;call&quot;</span><span class="p">,</span> <span class="n">option_type</span> <span class="o">=</span> <span class="s2">&quot;european&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the time 0 value of an option from Monte Carlo simulations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    s : Numpy array</span>
+<span class="sd">        The simulated paths of the option.</span>
+<span class="sd">    k : double</span>
+<span class="sd">        The strike price for the option.</span>
+<span class="sd">    r : double</span>
+<span class="sd">        The risk free interest rate to discount at.</span>
+<span class="sd">    T : double</span>
+<span class="sd">        The expiration date of the option. Used to discount.</span>
+<span class="sd">    call_put : {&quot;call&quot;, &quot;put&quot;}, default &quot;call&quot;</span>
+<span class="sd">        Specifications for the side of the option to price.</span>
+<span class="sd">    option_type : {&quot;european&quot;, &quot;american&quot;}, default &quot;european&quot;</span>
+<span class="sd">        The type of option to price.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    price : double</span>
+<span class="sd">        The Monte Carlo value of the option</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    ----------</span>
+<span class="sd">    simulate_gbm</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Error checking</span>
+    <span class="k">if</span> <span class="n">call_put</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;call&quot;</span><span class="p">,</span> <span class="s2">&quot;put&quot;</span><span class="p">]:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Either &#39;call&#39; or &#39;put&#39; must be specified.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">option_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;european&quot;</span><span class="p">,</span> <span class="s2">&quot;american&quot;</span><span class="p">]:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Option type must be &#39;european&#39; or &#39;american&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get pricing method</span>
+    <span class="n">pricing_method</span> <span class="o">=</span> <span class="n">dispatch_pricing_method</span><span class="p">(</span><span class="n">call_put</span><span class="p">,</span> <span class="n">option_type</span><span class="p">)</span>
+
+    <span class="c1"># Apply pricing method</span>
+    <span class="n">v_0</span> <span class="o">=</span> <span class="n">pricing_method</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">v_0</span></div>
+
+<span class="c1">#### Util --------------------------------------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="dispatch_pricing_method"><a class="viewcode-back" href="../docs/source/option_value.html#option_value.dispatch_pricing_method">[docs]</a><span class="k">def</span> <span class="nf">dispatch_pricing_method</span><span class="p">(</span><span class="n">call_put</span> <span class="o">=</span> <span class="s2">&quot;call&quot;</span><span class="p">,</span> <span class="n">option_type</span> <span class="o">=</span> <span class="s2">&quot;european&quot;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Formulate the correct option pricing function from user inputs</span>
+<span class="sd">    :param call_put:     Either &quot;call&quot; or &quot;put&quot;</span>
+<span class="sd">    :param option_type:  Either &quot;european&quot; or &quot;american&quot;</span>
+<span class="sd">    :return:             A function that prices the specified type of option</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Get the function specific to a call or put option price at time T</span>
+    <span class="k">if</span> <span class="n">call_put</span> <span class="o">==</span> <span class="s2">&quot;call&quot;</span><span class="p">:</span>
+
+        <span class="n">option_price_at_T</span> <span class="o">=</span> <span class="n">option_price_at_T_call</span>
+
+    <span class="k">elif</span> <span class="n">call_put</span> <span class="o">==</span> <span class="s2">&quot;put&quot;</span><span class="p">:</span>
+
+        <span class="n">option_price_at_T</span> <span class="o">=</span> <span class="n">option_price_at_T_put</span>
+
+    <span class="c1"># Get the pricing method specific to european or american</span>
+    <span class="k">if</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s2">&quot;european&quot;</span><span class="p">:</span>
+
+        <span class="n">pricing_method</span> <span class="o">=</span> <span class="n">european</span><span class="p">(</span><span class="n">option_price_at_T</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s2">&quot;american&quot;</span><span class="p">:</span>
+
+        <span class="n">pricing_method</span> <span class="o">=</span> <span class="n">american</span><span class="p">(</span><span class="n">option_price_at_T</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pricing_method</span></div>
+
+
+<div class="viewcode-block" id="european"><a class="viewcode-back" href="../docs/source/option_value.html#option_value.european">[docs]</a><span class="k">def</span> <span class="nf">european</span><span class="p">(</span><span class="n">call_put_option_price_at_T</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return a function that prices a European call/put</span>
+<span class="sd">    :param call_put_option_price_at_T:  A pricing function that prices the value of the option at T. This is different</span>
+<span class="sd">    depending on whether the option is a call or a put.</span>
+<span class="sd">    :return:          European pricing function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Create the European pricing function</span>
+    <span class="k">def</span> <span class="nf">european_pricing_method</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Price a european call / put from simulated values.</span>
+<span class="sd">        :param s:  An array of simulated stock prices</span>
+<span class="sd">        :param k:  Strike price</span>
+<span class="sd">        :param r:  Discount rate</span>
+<span class="sd">        :param T:  Number of periods to discount</span>
+<span class="sd">        :return:   The price of the european option</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Extract the s_T column</span>
+        <span class="c1"># This is all that is needed for European options</span>
+        <span class="n">s_T</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Apply call / put option value at T</span>
+        <span class="n">v_T</span> <span class="o">=</span> <span class="n">call_put_option_price_at_T</span><span class="p">(</span><span class="n">s_T</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+        <span class="c1"># Discount</span>
+        <span class="n">v_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">r</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v_T</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v_0</span>
+
+    <span class="k">return</span> <span class="n">european_pricing_method</span></div>
+
+
+<div class="viewcode-block" id="american"><a class="viewcode-back" href="../docs/source/option_value.html#option_value.american">[docs]</a><span class="k">def</span> <span class="nf">american</span><span class="p">(</span><span class="n">call_put_option_price_at_T</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return a function that prices an American call/put</span>
+<span class="sd">    :param call_put_option_price_at_T:  A pricing function that prices the value of the option at T. This is different</span>
+<span class="sd">    depending on whether the option is a call or a put. The function should accept s_T and k as parameters.</span>
+<span class="sd">    :return:          American pricing function</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">american_pricing_method</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Price an American call/put option from simulated values.</span>
+<span class="sd">        Uses regression method 1 from</span>
+<span class="sd">        :param s:</span>
+<span class="sd">        :param k:</span>
+<span class="sd">        :param r:</span>
+<span class="sd">        :param T:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">T</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="c1"># At i = M = T, use value at T</span>
+        <span class="n">v</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">call_put_option_price_at_T</span><span class="p">(</span><span class="n">s</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="p">)</span>
+
+        <span class="c1"># Basis function</span>
+        <span class="k">def</span> <span class="nf">basis_func_C</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">a0</span> <span class="o">+</span> <span class="p">(</span><span class="n">a1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">a2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">a3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># Iterate backwards</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iteration</span><span class="p">:</span>
+
+            <span class="c1"># x and y values for each regression</span>
+            <span class="n">s_ik</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">yvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">r</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span><span class="p">[:,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># Fit the 3rd ordered curve</span>
+            <span class="n">C_fit</span> <span class="o">=</span> <span class="n">scipy_opt</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">basis_func_C</span><span class="p">,</span> <span class="n">s_ik</span><span class="p">,</span> <span class="n">yvalues</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">C_fit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Use the optimal parameters</span>
+            <span class="n">C_hat</span> <span class="o">=</span> <span class="n">basis_func_C</span><span class="p">(</span><span class="n">s_ik</span><span class="p">,</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span>
+
+            <span class="c1"># Calculate the value of the option if this was time T</span>
+            <span class="n">s_ik_v</span> <span class="o">=</span> <span class="n">call_put_option_price_at_T</span><span class="p">(</span><span class="n">s_ik</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+            <span class="c1"># Take the max of the two to be the current value</span>
+            <span class="n">v</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">s_ik_v</span><span class="p">,</span> <span class="n">C_hat</span><span class="p">)</span>
+
+        <span class="c1"># Discount time 1 to time 0</span>
+        <span class="n">v</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">r</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Average the paths to get the Monte Carlo result</span>
+        <span class="n">v_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">v_0</span>
+
+    <span class="k">return</span> <span class="n">american_pricing_method</span></div>
+
+
+<div class="viewcode-block" id="option_price_at_T_call"><a class="viewcode-back" href="../docs/source/option_value.html#option_value.option_price_at_T_call">[docs]</a><span class="k">def</span> <span class="nf">option_price_at_T_call</span><span class="p">(</span><span class="n">s_T</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the option value at time T for a call</span>
+<span class="sd">    :param s_T:  Stock price at T</span>
+<span class="sd">    :param k:    Strike price</span>
+<span class="sd">    :return:     Option value at T</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">v_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">s_T</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">v_T</span></div>
+
+<div class="viewcode-block" id="option_price_at_T_put"><a class="viewcode-back" href="../docs/source/option_value.html#option_value.option_price_at_T_put">[docs]</a><span class="k">def</span> <span class="nf">option_price_at_T_put</span><span class="p">(</span><span class="n">s_T</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the option value at time T for a put</span>
+<span class="sd">    :param s_T:  Stock price at T</span>
+<span class="sd">    :param k:    Strike price</span>
+<span class="sd">    :return:     Option value at T</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">v_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">s_T</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">v_T</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Davis Vaughan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
