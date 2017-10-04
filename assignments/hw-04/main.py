@@ -1,8 +1,11 @@
+# See the Main docstring for all intro documentation
+
 from option_value import price_option
 from gbm_simulator import simulate_gbm
 import pandas as pd
 
 def main():
+
 
     # Parameters
     n          = 1000
