@@ -48,7 +48,11 @@ python2 main.py
 
 ^ Make sure you are using python2.
 
-A plot will pop up first with the 5 paths, and once you close the plot a numpy array
+A plot will pop up first with the 5 paths. It should look like this:
+
+![](./gbm-sample-path.png)
+
+and once you close the plot a numpy array
 will be printed to the console that looks like this:
 
 ```python
