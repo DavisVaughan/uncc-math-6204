@@ -11,19 +11,19 @@ Assignments
 
 * HW 1
 
-    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-01)
+    * [README](./assignments/hw-01/README.html)
     
 * HW 2
 
-    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-02)
+    * [README](./assignments/hw-02/README.html)
     
 * HW 3
 
-    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-03)
+    * [README](./assignments/hw-03/README.html)
 
 * HW 4
 
-    * [Github link](https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-04)
+    * [README](./assignments/hw-04/README.html)
     
     * [Documentation](./assignments/hw-04/docs/_build/html/index.html)
 
