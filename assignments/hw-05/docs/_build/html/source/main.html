@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>main module &mdash; hw5_regression_2 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="hw5_regression_2 0.0.1 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> hw5_regression_2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">main module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">hw5_regression_2</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>main module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/main.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-main">
+<span id="main-module"></span><h1>main module<a class="headerlink" href="#module-main" title="Permalink to this headline">¶</a></h1>
+<p>### Description</p>
+<p>This README is intended to guide the user in how to use HW-05.</p>
+<p>The assignment is hosted on github here:</p>
+<p><a class="reference external" href="https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-05">https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-05</a></p>
+<p>### General</p>
+<ul class="simple">
+<li>Author   - Davis Vaughan</li>
+<li>Date     - 10/05/2017</li>
+<li>Homework - 05</li>
+</ul>
+<p>### Purpose</p>
+<p>The purpose of this module is to calculate the Monte Carlo value of American options
+using the regression 2 approach from the Tools for Computational Finance book.</p>
+<p>### Thoughts on numerical accuracy</p>
+<p>I think that the values in HW5 are MUCH more accurate than those in HW4.
+With our computational constraints, only considering the in the money values
+allows our numerical method to converge to the true value of the option much faster.</p>
+<p>### Numerical methods used</p>
+<p>The Euler discretization of GBM was used to simulate the sample paths.</p>
+<p>This method prices the American option using a regression method.
+The continuation value at time t is calculated by regressing
+the discounted value of the option at time t+1 on the
+price at time t. The continuation value is then compared to
+the value of the payoff at time t, and the max is chosen as the
+value of the option at t.</p>
+<p>Notably, this is regression method 2, which only considers points that are
+in the money when running the regression and making updating decisions.</p>
+<p>### Included files</p>
+<p><cite>main.py</cite>         - (DRIVER) Simulates the GBM and calculates the American option values at different
+degrees of accuracy.</p>
+<p><cite>gbm_simulator.py</cite> - The functions that generate the stock price simulations using
+Euler methods.</p>
+<p><cite>option_value.py</cite> - The <cite>price_option()</cite> function in this file is the interface that
+prices the option based on the user&#8217;s inputs. It dispatches to find the correct pricing
+function using the functions in <cite>option_value_dispatch.py</cite>.</p>
+<p><cite>option_value_dispatch.py</cite> - These function support <cite>option_value.py</cite> and are used
+to return the correct option pricing function (European VS American and Call VS Put).</p>
+<p>### How to run</p>
+<p>Because the main.py file includes the code:</p>
+<dl class="docutils">
+<dt>if __name__ == &#8220;__main__&#8221;:</dt>
+<dd>print(main())</dd>
+</dl>
+<p>the easiest way to run the example is from the terminal.</p>
+<p>Within your command line / terminal, navigate to the folder containing the main.py script, and just run:</p>
+<p><cite>python2 main.py</cite></p>
+<p>^ Make sure you are using python2.</p>
+<p>A pandas data frame should output:</p>
+<p>MC_option_value call_put    dt option_type
+0        31.389674     call   .01    american
+1        28.906298      put   .01    american
+2        15.292809     call  .001    american
+3        29.552257      put  .001    american</p>
+<dl class="function">
+<dt id="main.main">
+<code class="descclassname">main.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Davis Vaughan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

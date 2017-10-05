@@ -70,7 +70,7 @@ Within your command line / terminal, navigate to the folder containing the main.
 
 A pandas data frame should output:
 
-   MC_option_value call_put    dt option_type
+MC_option_value call_put    dt option_type
 0        31.389674     call   .01    american
 1        28.906298      put   .01    american
 2        15.292809     call  .001    american
