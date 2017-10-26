@@ -33,4 +33,9 @@ Assignments
     
     * [Documentation](./assignments/hw-05/docs/_build/html/index.html)
 
+* HW 6
+
+    * [README](./assignments/hw-06/README.html)
+    
+    * [Documentation](./assignments/hw-06/docs/_build/html/index.html)
 
