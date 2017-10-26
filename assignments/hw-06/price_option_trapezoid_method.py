@@ -4,13 +4,12 @@ from math import pi
 def price_option_trapezoid_method(s_0, k, r, t_0, t_T, sigma, n, h, alpha):
     '''Price a European option by the trapezoid method.
 
-    This method calculates the pricing integral
-    obtained from an inverse fourier transform involving the fourier transform of the normalized
-    option price.
+    This method calculates the pricing integral obtained from an inverse fourier transform involving the
+    fourier transform of the normalized option price.
 
-    The approximation that it calculates is:
+    The approximation that it calculates is
 
-    :math:`Re \Big\{ \frac{e^{-\alpha k}}{\pi} \sum_{m = 0}^{N} e^{i \omega_m k} \hat{\nu}(w_m) \Delta \omega_m \Big\}`
+    .. math:: V_k = Re \Big\{ \\frac{e^{-\\alpha k}}{\pi} \sum_{m = 0}^{N} e^{i \omega_m k} \hat{\\nu}(w_m) \Delta \omega_m \Big\}
 
     Parameters
     ----------
@@ -68,13 +67,17 @@ def price_option_trapezoid_method(s_0, k, r, t_0, t_T, sigma, n, h, alpha):
     return price
 
 def nu_hat(omega_m, x_0, r, t_discount, sigma, alpha):
-    '''Calculate the fourier transform of the normalized European option value.
+    """Calculate the fourier transform of the normalized European option value.
 
     The transform is available in closed form as:
 
-    :math:`\hat{\nu}_c(w) = \frac{e^{-r(T-t)}}{(\alpha - i  \omega)(\alpha - i  \omega + 1)} \hat{q}(\omega + (\alpha + 1)i)`
+    .. math:: \hat{\\nu}_c(w) = \\frac{e^{-r(T-t)}}{(\\alpha - i  \omega)(\\alpha - i  \omega + 1)} \hat{q}(\omega + (\\alpha + 1)i)
 
-    :math:`\hat{q}(\omega') = e^{-i (x_0 + (r - \delta - \sigma^2 / 2) (T - t_0) ) \omega' - \frac{\sigma^2 (T - t_0)}{2} \omega' ^ 2}`
+    With q written as:
+
+    .. math:: \hat{q}(\omega') = e^{-i (x_0 + (r - \delta - \sigma^2 / 2) (T - t_0) ) \omega' - \\frac{\sigma^2 (T - t_0)}{2} \omega' ^ 2}
+
+
 
     Parameters
     ----------
@@ -99,7 +102,8 @@ def nu_hat(omega_m, x_0, r, t_discount, sigma, alpha):
     See also
     ----------
     price_option_trapezoid_method
-    '''
+
+    """
 
     # Calculate q_hat
     q = q_hat(omega_m + (alpha + 1) * 1j, x_0, r, sigma)

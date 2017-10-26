@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>main module &mdash; option_price_fourier_trap 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="option_price_fourier_trap 0.0.1 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> option_price_fourier_trap
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">main module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">option_price_fourier_trap</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>main module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/main.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-main">
+<span id="main-module"></span><h1>main module<a class="headerlink" href="#module-main" title="Permalink to this headline">¶</a></h1>
+<p>### Description</p>
+<p>This README is intended to guide the user in how to use HW-06.</p>
+<p>The assignment is hosted on github here:</p>
+<p><a class="reference external" href="https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-06">https://github.com/DavisVaughan/uncc-math-6204/tree/master/assignments/hw-06</a></p>
+<p>### General</p>
+<ul class="simple">
+<li>Author   - Davis Vaughan</li>
+<li>Date     - 10/26/2017</li>
+<li>Homework - 06</li>
+</ul>
+<p>### Purpose</p>
+<p>The purpose of this module is to calculate the value of European call and put
+options using fourier transforms. The theory is developed in presentation 07,
+and the pricing integral is calculated through the trapezoidal rule. A more
+efficient way to calculate the integral is by FFT. The documentation of each
+function presents the closed form solutions of the pricing integrals and
+the pieces involved to evaluate them.</p>
+<p>### Thoughts on numerical accuracy</p>
+<p>With the six values of alpha that are tested in this HW, the algorithm is
+stable. Given N = 1000, these values all converge to the same answer for a put/call.
+With N = 100, the values are all close to each other, but aren&#8217;t exactly the same.</p>
+<p>This being said, it seems that the value of alpha works best in a certain range.
+Increasing the alpha value to 50 makes the algorithm give wildly large answers
+and decreasing the alpha value to .001 makes the algorithm give answers in the
+hundreds.</p>
+<p>### Numerical methods used</p>
+<p>For the theoretical work, the fourier transform and inverse fourier transform
+were used to find the solution to the option price. To implement them,
+the trapezoidal rule was used to approximate the integral after picking an
+upper bound on the frequency domain.</p>
+<p>### Included files</p>
+<p><cite>main.py</cite> - (DRIVER) Price the option over a number of different values of alpha.</p>
+<p><cite>price_option_trapezoid_method.py</cite> - Contains functions that price the European option.</p>
+<p>### How to run</p>
+<p>Because the main.py file includes the code:</p>
+<dl class="docutils">
+<dt>if __name__ == &#8220;__main__&#8221;:</dt>
+<dd>print(main())</dd>
+</dl>
+<p>the easiest way to run the example is from the terminal.</p>
+<p>Within your command line / terminal, navigate to the folder containing the main.py script, and just run:</p>
+<p>python2 main.py</p>
+<p>A pandas data frame should output:</p>
+<p>alpha  option_price
+0    2.5     31.792518
+1   -2.5      7.890872
+2    5.0     31.792518
+3   -5.0      7.890872
+4   10.0     31.792518
+5  -10.0      7.890872</p>
+<dl class="function">
+<dt id="main.main">
+<code class="descclassname">main.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Davis Vaughan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
