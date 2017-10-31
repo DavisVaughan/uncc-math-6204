@@ -38,4 +38,8 @@ Assignments
     * [README](./assignments/hw-06/README.html)
     
     * [Documentation](./assignments/hw-06/docs/_build/html/index.html)
+    
+* HW 7
+
+    * [README](./assignments/hw-07/README.html)
 
