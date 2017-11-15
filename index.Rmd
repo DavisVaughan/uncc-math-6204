@@ -43,3 +43,7 @@ Assignments
 
     * [README](./assignments/hw-07/README.html)
 
+* HW 8
+
+    * [README](./assignments/hw-08/README.html)
+
