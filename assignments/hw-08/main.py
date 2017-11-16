@@ -60,7 +60,8 @@ A numpy array should output:
 
 import numpy as np
 from scipy.sparse import spdiags
-from thomas import thomas_solver
+from thomas2 import thomas_solver
+import time
 
 def main():
 
