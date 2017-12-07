@@ -125,12 +125,13 @@ def main():
 
         # Plot V VS K
         axes[i[a], j[a]].plot(k_plot_range, V_plot_range)
-        axes[i[a], j[a]].set_title('K VS V with alpha = ' + str(alpha))
+        axes[i[a], j[a]].set_title(r'K VS V with $\alpha =$ ' + str(alpha))
         axes[i[a], j[a]].set_xlabel('K')
         axes[i[a], j[a]].set_ylabel('V')
 
         a = a + 1
 
+    plt.tight_layout()
     plt.show()
 
     return prices
